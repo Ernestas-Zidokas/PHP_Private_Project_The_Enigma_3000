@@ -8,7 +8,7 @@ abstract class Decryption {
     protected $data;
 
     /** array Encryption class generated array of indexes and values to reverse text */
-    protected $decryption_array;
+    protected $encrypted_data;
 
     /**
      * Function splices safe input data into one letter arrays

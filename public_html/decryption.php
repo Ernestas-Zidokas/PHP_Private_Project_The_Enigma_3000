@@ -14,7 +14,7 @@ $form = [
         'data' => [
             'label' => 'Message',
             'type' => 'text',
-            'placeholder' => 'Enter your text',
+            'placeholder' => 'Enter your encrypted text',
             'validate' => [
                 'validate_not_empty'
             ]
@@ -23,7 +23,7 @@ $form = [
     'validate' => [],
     'buttons' => [
         'submit' => [
-            'text' => 'Encrypt!'
+            'text' => 'Decrypt!'
         ]
     ],
     'callbacks' => [
@@ -43,15 +43,12 @@ if (!empty($_POST)) {
     $safe_input = get_safe_input($form);
     $form_success = validate_form($safe_input, $form);
     if ($form_success) {
-        $data_array = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k ', 'l',
-            'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
-        $encryption = new \App\Encryption($data_array, $safe_input['data']);
         $db = new Core\FileDB(ROOT_DIR . '/app/files/db.txt');
-        $model_encryption = new \App\Model\ModelEncryption($db, TABLE_NAME);
-        $model_encryption->insert($safe_input['code'], $encryption);
+        $model_decryption = new App\Model\ModelDecryption($db, TABLE_NAME);
+        $encrypted_data = $model_decryption->load($safe_input['code']);
+        $decryption = new App\Decryption($encrypted_data, $safe_input['data']);
 
-        $success_msg = 'Message successfully encrypted!';
+        $success_msg = 'Message successfully decrypted!';
     }
 }
 ?>
@@ -66,8 +63,7 @@ if (!empty($_POST)) {
             <h4><?php print $success_msg; ?></h4>
         <?php endif; ?>
         <?php if (isset($form_success)): ?>
-            <h2>Your code for decryption: <?php print $safe_input['code']; ?></h2>
-            <h3>Your encrypted message: <?php print $encryption->Join(); ?></h3>
+            <h3>Your decrypted message: <?php ?></h3>
         <?php endif; ?>
     </body>
 </html>

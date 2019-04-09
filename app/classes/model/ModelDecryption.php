@@ -2,11 +2,10 @@
 
 namespace App\Model;
 
-class ModelEncryption {
+class ModelDecryption {
 
     public $db;
 
-    /** string String witch determines witch array to use for decryption */
     public $table_name;
 
     public function __construct(\Core\FileDB $db, $table_name) {
@@ -17,15 +16,15 @@ class ModelEncryption {
     public function load($id) {
         $data_row = $this->db->getRow($this->table_name, $id);
         if ($data_row) {
-            return new \App\Encryption($data_row); 
+            return new \App\Decryption($data_row); 
         } else {
             return false;
         }
     }
 
-    public function insert($id, \App\Encryption $encryption) {
+    public function insert($id, \App\Decryption $decryption) {
         if (!$this->db->getRow($this->table_name, $id)) {
-            $this->db->setRow($this->table_name, $id, $encryption->getData());
+            $this->db->setRow($this->table_name, $id, $decryption->getData());
             $this->db->save();
             return true;
         } else {
@@ -53,11 +52,11 @@ class ModelEncryption {
      * @return \App\Item\Gerimas[]
      */
     public function loadAll() {
-        $encryption_masyvas = [];
-        foreach ($this->db->getRows($this->table_name) as $encryption) {
-            $encryption_masyvas[] = new \App\Encryption($encryption);
+        $decryption_masyvas = [];
+        foreach ($this->db->getRows($this->table_name) as $decryption) {
+            $decryption_masyvas[] = new \App\Decryption($decryption);
         }
-        return $encryption_masyvas;
+        return $decryption_masyvas;
     }
 
     /**
