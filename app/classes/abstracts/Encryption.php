@@ -8,10 +8,12 @@ abstract class Encryption {
     protected $data;
 
     /** @var array Array of letters assigned to a index */
-    protected $encryption_array;
+    protected $alphabet_array;
+    
+    protected $message;
 
-    protected function __construct($encryption_array, $data) {
-        $this->encryption_array = $encryption_array;
+    protected function __construct($alphabet_array, $data) {
+        $this->alphabet_array = $alphabet_array;
         $this->data = $data;
     }
 
@@ -23,7 +25,7 @@ abstract class Encryption {
     /**
      * Function joins spliced one data arrays into text after encryption
      */
-    abstract function Join(): string;
+    abstract function Join($message): string;
 
     /**
      * Takes spliced array value (single letter) and assigns 
@@ -31,4 +33,6 @@ abstract class Encryption {
      * rolled number ( for decryption ) and the value for displaying encrypted text
      */
     abstract function Encryption();
+    
+    abstract function getMessage();
 }

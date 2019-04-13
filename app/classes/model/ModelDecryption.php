@@ -5,7 +5,6 @@ namespace App\Model;
 class ModelDecryption {
 
     public $db;
-
     public $table_name;
 
     public function __construct(\Core\FileDB $db, $table_name) {
@@ -16,7 +15,16 @@ class ModelDecryption {
     public function load($id) {
         $data_row = $this->db->getRow($this->table_name, $id);
         if ($data_row) {
-            return new \App\Decryption($data_row); 
+            return new \App\Decryption($data_row);
+        } else {
+            return false;
+        }
+    }
+
+    public function loadArray($id) {
+        $data_row = $this->db->getRow($this->table_name, $id);
+        if ($data_row) {
+            return $data_row;
         } else {
             return false;
         }

@@ -4,23 +4,48 @@ namespace App;
 
 class Encryption extends Abstracts\Encryption {
 
-    public function __construct($encryption_array, $data) {
-        parent::__construct($encryption_array, $data);
+    public $generated_array;
+
+    public function __construct($alphabet_array, $data) {
+        parent::__construct($alphabet_array, $data);
+        $this->generateEncryptionArray();
         $this->Encryption();
     }
 
     public function Encryption() {
         $encrypted_data = [];
-        $counter = 0;
-        foreach ($this->Splice() as $char) {
-            $encrypted_data[$char . '-' . $counter++] = $this->encryption_array[rand(0, 25)];
+
+        foreach ($this->Splice() as $user_char) {
+            foreach ($this->generated_array as $index => $char) {
+                if ($user_char == $index) {
+                    $encrypted_data[] = $char;
+                }
+            }
         }
 
-        return $this->data = $encrypted_data;
+        return $this->message = $this->Join($encrypted_data);
     }
 
-    public function Join(): string {
-        return join("", $this->data);
+    public function generateEncryptionArray() {
+
+        $shuffled_array = [];
+        $keys_normal = array_keys($this->alphabet_array);
+        $keys_shuffled = array_keys($this->alphabet_array);
+        shuffle($keys_shuffled);
+        $counter = 0;
+
+        foreach ($keys_normal as $key_normal) {
+            $counter++;
+            $shuffled_array[$key_normal] = $keys_shuffled[$counter - 1];
+        }
+
+        var_dump('generated array');
+        var_dump($shuffled_array);
+        return $this->generated_array = $shuffled_array;
+    }
+
+    public function Join($message): string {
+        return join("", $message);
     }
 
     public function Splice(): array {
@@ -28,7 +53,11 @@ class Encryption extends Abstracts\Encryption {
     }
 
     public function getData() {
-        return $this->data;
+        return $this->generated_array;
+    }
+
+    public function getMessage() {
+        return $this->message;
     }
 
 }

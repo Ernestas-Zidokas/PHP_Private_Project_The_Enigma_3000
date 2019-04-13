@@ -43,10 +43,13 @@ if (!empty($_POST)) {
     $safe_input = get_safe_input($form);
     $form_success = validate_form($safe_input, $form);
     if ($form_success) {
-        $data_array = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k ', 'l',
-            'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+        $alphabet_array = [
+            'a' => 'a', 'b' => 'b', 'c' => 'c', 'd' => 'd', 'e' => 'e', 'f' =>
+            'f', 'g' => 'g', 'h' => 'h', 'i' => 'i', 'j' => 'j', 'k' => 'k', 'l' => 'l', 'm' =>
+            'm', 'n' => 'n', 'o' => 'o', 'p' => 'p', 'q' => 'q', 'r' => 'r', 's' => 's', 't' =>
+            't', 'u' => 'u', 'v' => 'v', 'w' => 'w', 'x' => 'x', 'y' => 'y', 'z' => 'z'];
 
-        $encryption = new \App\Encryption($data_array, $safe_input['data']);
+        $encryption = new \App\Encryption($alphabet_array, $safe_input['data']);
         $db = new Core\FileDB(ROOT_DIR . '/app/files/db.txt');
         $model_encryption = new \App\Model\ModelEncryption($db, TABLE_NAME);
         $model_encryption->insert($safe_input['code'], $encryption);
@@ -61,13 +64,14 @@ if (!empty($_POST)) {
         <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
+        <nav><a href="decryption.php">Decryption</a></nav>
         <?php require '../core/views/form.php'; ?>
         <?php if (isset($success_msg)): ?>
             <h4><?php print $success_msg; ?></h4>
         <?php endif; ?>
         <?php if (isset($form_success)): ?>
             <h2>Your code for decryption: <?php print $safe_input['code']; ?></h2>
-            <h3>Your encrypted message: <?php print $encryption->Join(); ?></h3>
+            <h3>Your encrypted message: <?php print $encryption->getMessage(); ?></h3>
         <?php endif; ?>
     </body>
 </html>

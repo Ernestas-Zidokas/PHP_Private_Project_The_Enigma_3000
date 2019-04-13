@@ -4,7 +4,7 @@ require_once '../bootloader.php';
 $form = [
     'fields' => [
         'code' => [
-            'label' => 'Encryption Code',
+            'label' => 'Decryption Code',
             'type' => 'text',
             'placeholder' => 'Enter your code',
             'validate' => [
@@ -45,7 +45,7 @@ if (!empty($_POST)) {
     if ($form_success) {
         $db = new Core\FileDB(ROOT_DIR . '/app/files/db.txt');
         $model_decryption = new App\Model\ModelDecryption($db, TABLE_NAME);
-        $encrypted_data = $model_decryption->load($safe_input['code']);
+        $encrypted_data = $model_decryption->loadArray($safe_input['code']);
         $decryption = new App\Decryption($encrypted_data, $safe_input['data']);
 
         $success_msg = 'Message successfully decrypted!';
@@ -58,12 +58,13 @@ if (!empty($_POST)) {
         <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
+        <nav><a href="index.php">Encryption</a></nav>
         <?php require '../core/views/form.php'; ?>
         <?php if (isset($success_msg)): ?>
             <h4><?php print $success_msg; ?></h4>
         <?php endif; ?>
         <?php if (isset($form_success)): ?>
-            <h3>Your decrypted message: <?php ?></h3>
+            <h3>Your decrypted message: <?php print $decryption->getMessage(); ?></h3>
         <?php endif; ?>
     </body>
 </html>
