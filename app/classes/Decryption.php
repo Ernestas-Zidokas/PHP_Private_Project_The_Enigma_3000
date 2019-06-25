@@ -19,7 +19,7 @@ class Decryption extends Abstracts\Decryption {
                 }
             }
         }
-        var_dump($decrypted_data);
+
         return $this->message = $this->Join($decrypted_data);
     }
 

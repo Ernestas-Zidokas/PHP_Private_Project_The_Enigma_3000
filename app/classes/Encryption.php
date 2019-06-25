@@ -38,9 +38,7 @@ class Encryption extends Abstracts\Encryption {
             $counter++;
             $shuffled_array[$key_normal] = $keys_shuffled[$counter - 1];
         }
-
-        var_dump('generated array');
-        var_dump($shuffled_array);
+        
         return $this->generated_array = $shuffled_array;
     }
 
